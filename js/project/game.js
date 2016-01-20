@@ -18,8 +18,8 @@ var Game = function(parentGameElementTag) {
 Game.prototype = {
 
   init: function() {
-    self.levelObj = new Level();
     $('<div class="game" id="' + self.gameElementId + '"></div>').prependTo(self.parentGameElementTag);
+    self.levelObj = new Level(self.gameElementId, self.level);    
   },
 
   levelsLoop: function() {

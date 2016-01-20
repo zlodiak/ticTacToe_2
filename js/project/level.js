@@ -1,12 +1,12 @@
-var Level = function(gameElementId) { 
+var Level = function(gameElementId, level) { 
+  self = this;
+
+  this.level = level;
   this.fieldElementId = 'field';  
-  this.width = 3; 
-  this.height = 3;
-  this.fieldArr = [];
-  this.cellSize = 100;
   this.gameElementId = gameElementId;
 
-  this.levelScreenDisplay('body');
+  this.levelScreenDisplay('body');  
+  this.fieldObj = new Field(this.gameElementId, this.cellSize);
 
 /*  this.helper = new Helper, 
   this.informer = new Informer(this.gameElementId, {
@@ -27,7 +27,7 @@ var Level = function(gameElementId) {
   this.stepsLoop(); */
 };
 
-Level.prototype = Object.create(Game.prototype);
+//Level.prototype = Object.create(Game.prototype);
 
 Level.prototype = {
 
@@ -40,10 +40,9 @@ Level.prototype = {
       document.onkeypress = function() {
         document.onkeypress = undefined;
         $('#levelBeginLabel').remove();
-        self.playerState = 1;
       };          
     }, 1000);
-  },  
+  },   
 
   compStep: function() {  
     var w, h;
@@ -92,16 +91,6 @@ Level.prototype = {
 
       self.stepsLoop();
     });  
-  },
-
-  fillFieldArr: function() {
-    for(var w = 0; w < self.width; w++) {
-      self.fieldArr[w] = new Array(h);   
-
-      for(var h = 0; h < self.height; h++) {
-        self.fieldArr[w][h] = 0;
-      };
-    };  console.log(self.fieldArr);
   },
 
   checkStateLevel: function(label) {
