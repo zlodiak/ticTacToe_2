@@ -7,6 +7,8 @@ var Field = function(gameElementId, cellSize) {
   }).appendTo('#' + gameElementId);
 };
 
+Field.prototype = Object.create(Level.prototype);
+
 Field.prototype = {
 
   cellsDelete: function() {
@@ -18,7 +20,7 @@ Field.prototype = {
 
     $('#' + fieldId).html('');
 
-    for(var w = 0; w < self.width; w++) for(var h = 0; h < self.height; h++) {
+    for(var w = 0; w < self.width; w++) for(var h = 0; h < self.height; h++) {  console.log('cell render' + fieldId);
       bgImage = '';
 
       if(fieldArr[w][h] == 0) {
