@@ -1,12 +1,46 @@
 var Level = function(gameObj) { 
   var self = this;
 
+  self.stepsCount = 0;
   this.gameObj = gameObj; 
-  this.levelScreenDisplay('body');  
+  this.fieldArr = [];
   this.fieldObj = new Field(this, this.gameObj);
+
+  console.log('===' + this.fieldArr);
+
+  this.levelScreenDisplay('body');     
+  this.clickHandlersInit();
 };
 
 Level.prototype = {
+
+  clickHandlersInit: function() {
+    $('.cell').on('click', function() {
+      var w = $(this).attr('data-w'), 
+          h = $(this).attr('data-h');
+
+      //console.log(this.fieldArr);
+
+      switch (this.fieldArr[w][h]) {
+        case 0:
+          this.fieldArr[w][h] = 1;
+          this.stepsCount++;          
+          this.fieldObj.cellsRender();                
+          break;
+        case 1:
+          //self.informer.refreshMessage('В эту клету вы уже ходили', 'red');
+          break;
+        case -1:
+          //self.informer.refreshMessage('Эта клетка уже занята', 'red');
+          break;
+        default:
+          // console.log('Error analyze!');
+          break;
+      };   
+
+      self.stepsLoop();
+    }); 
+  },
 
   levelScreenDisplay: function(parentElementTag) {
     $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.gameObj.level + '</div>').appendTo(parentElementTag);   

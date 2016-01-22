@@ -4,14 +4,14 @@ var CellsObserver = function(){
  
 CellsObserver.prototype = {
 
-    subscribe: function(bulletObject) {
-        this.handlers.push(bulletObject);
+    subscribe: function(cellObject) {
+        this.handlers.push(cellObject);
     },
  
-    unsubscribe: function(bulletObject) {
+    unsubscribe: function(cellObject) {
         this.handlers = this.handlers.filter(
             function(bullet) {
-                if (bullet !== bulletObject) {
+                if (bullet !== cellObject) {
                     return bullet;
                 }
             }
