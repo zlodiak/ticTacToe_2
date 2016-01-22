@@ -1,38 +1,15 @@
-var Level = function(gameElementId, level) { 
-  self = this;
+var Level = function(gameObj) { 
+  var self = this;
 
-  this.level = level;
-  this.fieldElementId = 'field';  
-  this.gameElementId = gameElementId;
-
+  this.gameObj = gameObj; 
   this.levelScreenDisplay('body');  
-  this.fieldObj = new Field(this.gameElementId, this.cellSize);
-
-/*  this.helper = new Helper, 
-  this.informer = new Informer(this.gameElementId, {
-                        score: this.score,
-                        level: this.level
-                      });   
-  this.field = new Field(this.gameElementId, this.cellSize),
-
-  this.fillFieldArr();
-
-  this.field.cellsRender(self.fieldElementId, self.fieldArr);  
-
-  self.informer.refreshInfo({
-    score: self.score,
-    level: self.level
-  });      
-
-  this.stepsLoop(); */
+  this.fieldObj = new Field(this, this.gameObj);
 };
-
-//Level.prototype = Object.create(Game.prototype);
 
 Level.prototype = {
 
   levelScreenDisplay: function(parentElementTag) {
-    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + self.level + '</div>').appendTo(parentElementTag);   
+    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.gameObj.level + '</div>').appendTo(parentElementTag);   
 
     setTimeout(function() { 
       $('<div class="any_key_invitation" id="anyKeyInvitation">Нажмите любую клавишу для старта</div>').appendTo('#levelBeginLabel');
@@ -133,4 +110,25 @@ Level.prototype = {
       };
     };    
   }  
+
+  //this.cellsObserver = new CellsObserver();
+  //this.fieldObj = new Field(this.gameElementId, this.cellSize);
+
+/*  this.helper = new Helper, 
+  this.informer = new Informer(this.gameElementId, {
+                        score: this.score,
+                        level: this.level
+                      });   
+  this.field = new Field(this.gameElementId, this.cellSize),
+
+  this.fillFieldArr();
+
+  this.field.cellsRender(self.fieldElementId, self.fieldArr);  
+
+  self.informer.refreshInfo({
+    score: self.score,
+    level: self.level
+  });      
+
+  this.stepsLoop(); */  
 };

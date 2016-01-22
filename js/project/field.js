@@ -1,30 +1,30 @@
-var Field = function(gameElementId, cellSize) { 
-  self = this;
+var Field = function(levelObj, gameObj) { 
+  var self = this;
 
-  this.gameElementId = gameElementId;
-  this.cellSize = cellSize;
-  this.fieldId = 'field';
+  this.gameObj = gameObj;   
+  this.levelObj = levelObj;  
+  this.fieldElementId = 'field';   
   this.fieldArr = [];
   this.cellSize = 100; 
   this.width = 3; 
-  this.height = 3;   
+  this.height = 3;    
 
   this.init();
 };
 
-// Field.prototype = Object.create(Level.prototype);
-
 Field.prototype = {
 
-  init: function() {
-    self.fillFieldArr();
+  init: function() {  
+    var gameElement = $('#' + this.gameObj.gameElementId);
 
-    $('<div class="field" id="field"></div>').css({
-      width: (self.cellSize * 3) + 'px',
-      height: (self.cellSize * 3) + 'px'
-    }).appendTo('#' + self.gameElementId);
+    this.fillFieldArr();
 
-    self.cellsRender(self.fieldId, self.fieldArr);
+    $('<div class="field" id="field">d</div>').css({
+      width: (this.cellSize * 3) + 'px',
+      height: (this.cellSize * 3) + 'px'
+    }).appendTo(gameElement);
+
+    this.cellsRender();
   },
 
   cellsDelete: function() {
@@ -32,29 +32,29 @@ Field.prototype = {
   },  
 
   fillFieldArr: function() {
-    for(var w = 0; w < self.width; w++) {
-      self.fieldArr[w] = new Array();   
+    for(var w = 0; w < this.width; w++) {
+      this.fieldArr[w] = new Array();   
 
-      for(var h = 0; h < self.height; h++) {
-        self.fieldArr[w][h] = 0;
+      for(var h = 0; h < this.height; h++) {
+        this.fieldArr[w][h] = 0;
       };
-    };  console.log(self.fieldArr);
+    };  
   },   
 
-  cellsRender: function(fieldId, fieldArr) {   console.log(66);
+  cellsRender: function() {  
     var bgImage;
 
-    $('#' + fieldId).html('');
+    $('#' + this.fieldElementId).html('');
 
-    for(var w = 0; w < self.width; w++) for(var h = 0; h < self.height; h++) { 
+    for(var w = 0; w < this.width; w++) for(var h = 0; h < this.height; h++) { 
       bgImage = '';
 
-      if(fieldArr[w][h] == 0) {
+      if(this.fieldArr[w][h] == 0) {
       }
-      else if(fieldArr[w][h] == 1) {
+      else if(this.fieldArr[w][h] == 1) {
         bgImage = 'images/cross.png';
       }
-      else if(fieldArr[w][h] == -1) {
+      else if(this.fieldArr[w][h] == -1) {
         bgImage = 'images/zero.png';
       };    
 
@@ -65,7 +65,7 @@ Field.prototype = {
         height: (this.cellSize -1) + 'px',
         left: (w * this.cellSize) + 'px',
         top: (h * this.cellSize) + 'px'
-      }).appendTo('#' + fieldId);      
+      }).appendTo('#' + this.fieldElementId);      
     };
   }  
 

@@ -1,7 +1,5 @@
-var Game = function(parentGameElementTag) {
-  self = this;
-
-  this.parentGameElementTag = parentGameElementTag;
+var Game = function() {
+  this.parentGameElementTag = 'body';
   this.gameElementId = 'game';
   this.level = 1;
   this.score = 0;
@@ -10,16 +8,14 @@ var Game = function(parentGameElementTag) {
   this.myLabel = 1;
   this.compLabel = -1;
   this.stepsCount = 0;
-  this.gameState =0;
-
-  this.init();
+  this.gameState = 0;
+  this.levelObj = new Level(this);  
 };
 
 Game.prototype = {
 
-  init: function() {
-    $('<div class="game" id="' + self.gameElementId + '"></div>').prependTo(self.parentGameElementTag);
-    self.levelObj = new Level(self.gameElementId, self.level);    
+  init: function() {  
+  
   },
 
   levelsLoop: function() {
