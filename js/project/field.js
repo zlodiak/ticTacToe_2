@@ -17,8 +17,8 @@ var Field = function(levelObj, gameObj) {
 
 Field.prototype = {
 
-  cellsDelete: function(id) { console.log('del');
-    $('#' + id).remove();
+  cellsDelete: function() {
+
   },  
 
   fieldElementCreate: function() {
@@ -38,35 +38,35 @@ Field.prototype = {
         this.levelObj.fieldArr[w][h] = 0;
       };
     };  
+
+    console.log(this.levelObj.fieldArr);
   },   
 
-  cellRender: function(w, h) { console.log('cr');
-    var bgImage = '';
-
-    if(this.levelObj.fieldArr[w][h] == 0) {
-    }
-    else if(this.levelObj.fieldArr[w][h] == 1) {
-      bgImage = 'images/cross.png';
-    }
-    else if(this.levelObj.fieldArr[w][h] == -1) {
-      bgImage = 'images/zero.png';
-    };    
-
-    $('<div class="cell" id="Cell_' + w + '_' + h + '" data-w="' + w + '" data-h="' + h + '" ></div>').css({
-      background: 'url("' + bgImage + '") left top no-repeat',
-      backgroundSize: 'cover',
-      width: (this.cellSize - 1) + 'px',
-      height: (this.cellSize -1) + 'px',
-      left: (w * this.cellSize) + 'px',
-      top: (h * this.cellSize) + 'px'
-    }).appendTo('#' + this.fieldElementId);     
-  },
-
   cellsRender: function() {
+    var bgImage;
+
     $('#' + this.fieldElementId).html('');
 
     for(var w = 0; w < this.width; w++) for(var h = 0; h < this.height; h++) { 
-      this.cellRender(w, h);
+      bgImage = '';
+
+      if(this.levelObj.fieldArr[w][h] == 0) {
+      }
+      else if(this.levelObj.fieldArr[w][h] == 1) {
+        bgImage = 'images/cross.png';
+      }
+      else if(this.levelObj.fieldArr[w][h] == -1) {
+        bgImage = 'images/zero.png';
+      };    
+
+      $('<div class="cell" id="Cell_' + w + '_' + h + '" data-w="' + w + '" data-h="' + h + '" ></div>').css({
+        background: 'url("' + bgImage + '") left top no-repeat',
+        backgroundSize: 'cover',
+        width: (this.cellSize - 1) + 'px',
+        height: (this.cellSize -1) + 'px',
+        left: (w * this.cellSize) + 'px',
+        top: (h * this.cellSize) + 'px'
+      }).appendTo('#' + this.fieldElementId);     
     };
   }  
 

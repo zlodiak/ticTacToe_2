@@ -1,21 +1,48 @@
 var Level = function(gameObj) { 
   var self = this;
 
+  self.stepsCount = 0;
   this.gameObj = gameObj; 
-
-  self.stepsCount = 0;  
   this.fieldArr = [];
   this.fieldObj = new Field(this, this.gameObj);
-  this.helperObj = new Helper();   
+
+  console.log('===' + this.fieldArr);
 
   this.levelScreenDisplay('body');     
+  this.clickHandlersInit();
 };
 
 Level.prototype = {
 
-  
+  clickHandlersInit: function() {
+    $('.cell').on('click', function() {
+      var w = $(this).attr('data-w'), 
+          h = $(this).attr('data-h');
 
-  levelScreenDisplay: function(parentElementTag) {  console.log('lscr');
+      //console.log(this.fieldArr);
+
+      switch (this.fieldArr[w][h]) {
+        case 0:
+          this.fieldArr[w][h] = 1;
+          this.stepsCount++;          
+          this.fieldObj.cellsRender();                
+          break;
+        case 1:
+          //self.informer.refreshMessage('В эту клету вы уже ходили', 'red');
+          break;
+        case -1:
+          //self.informer.refreshMessage('Эта клетка уже занята', 'red');
+          break;
+        default:
+          // console.log('Error analyze!');
+          break;
+      };   
+
+      self.stepsLoop();
+    }); 
+  },
+
+  levelScreenDisplay: function(parentElementTag) {
     $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.gameObj.level + '</div>').appendTo(parentElementTag);   
 
     setTimeout(function() { 
@@ -27,6 +54,27 @@ Level.prototype = {
       };          
     }, 1000);
   },   
+
+  compStep: function() {  
+    var w, h;
+
+    for(var i = 0; i < 100; i++) {  
+      w = self.helper.randomIntFromZero(3);
+      h = self.helper.randomIntFromZero(3);
+
+      if(self.fieldArr[w][h] == 0) {  
+        self.fieldArr[w][h] = -1;
+        self.field.cellsRender(self.fieldElementId, self.fieldArr); 
+        break;
+      };
+    };
+
+    self.stepsCount++; 
+    self.field.cellsRender(self.fieldElementId, self.fieldArr);
+    self.checkStateLevel(self.compLabel);
+
+    return;
+  }, 
 
   stepsLoop: function() {   
     $('.cell').one('click', function() {
