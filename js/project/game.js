@@ -7,16 +7,72 @@ var Game = function() {
   this.scoreValue = 1000;
   this.myLabel = 1;
   this.compLabel = -1;
+  this.stepsLabel = this.myLabel;
   this.stepsCount = 0;
   this.gameState = 0;
   this.levelObj = new Level(this);  
+
+  this.gameLoop();
 };
 
 Game.prototype = {
 
-  init: function() {  
-  
+  gameLoop: function() { 
+    self = this; 
+
+    this.level = new Level(this);   
+
+    $("#game .cell").each(function(indx, element) {
+      var id = $(element).attr('id'), 
+          w = $(element).attr('data-w'),
+          h = $(element).attr('data-h');
+
+      $('#' + id).on('click', function() { 
+        $(this).off('click');
+        self.gameStep(w, h, id);
+      });       
+    });
   },
+
+  gameStep: function(w, h, id) {  
+    console.log('gameStep');
+
+    this.levelObj.stepsCount++;  
+
+    if(this.stepsLabel == this.myLabel) {
+      console.log('myStep');
+      this.stepsLabel = this.compLabel;
+      self.levelObj.fieldObj.cellsDelete(id); 
+      self.levelObj.fieldObj.cellRender(w, h); 
+    }
+    else if(this.stepsLabel == this.compLabel) {
+      console.log('compStep');
+      this.stepsLabel = this.myLabel;
+    };
+
+  },
+
+  compStep: function() {  
+    var w, h;
+
+    for(var i = 0; i < 100; i++) {  
+      w = self.helperObj.randomIntFromZero(3);
+      h = self.helperObj.randomIntFromZero(3);
+
+      console.log(w);
+
+      if(self.fieldArr[w][h] == 0) {  
+        self.fieldArr[w][h] = -1;
+        self.stepsCount++;         
+        self.fieldObj.cellsRender(); 
+        break;
+      };
+    };
+    
+    //self.checkStateLevel(self.compLabel);
+
+    return;
+  }, 
 
   levelsLoop: function() {
     //self.informer.refreshHiScore(self.hiScore);
