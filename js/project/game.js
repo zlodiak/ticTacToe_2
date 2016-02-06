@@ -37,21 +37,17 @@ Game.prototype = {
     }, 1000);
   },     
 
-  levelResultCompute: function(winner) { 
+  nextLevelCompute: function(winner) { 
     var self = this;   
 
-    setTimeout(function() {
-      if(winner == self.playerLabel) {  console.log('you');
-        self.level += 1;
-      } 
-      else if(winner == self.compLabel) { console.log('comp');
-        self.level = 1;
-      } else {  console.log('std off');
-        self.level = self.level;        
-      };
+    if(winner == self.playerLabel) {  console.log('you');
+      self.level += 1;
+    } 
+    else if(winner == self.compLabel) { console.log('comp');
+      self.level = 1;
+    } else {  console.log('std off'); };
 
-      self.startNewLevel(); 
-    }, 2000);    
+    return self.level;   
   }
 
 };

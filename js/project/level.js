@@ -2,7 +2,6 @@ var Level = function(gameObj) {
   var self = this;
 
   this.gameObj = gameObj; 
-
   this.stepsCount = 0;
   
   this.fieldObj = new Field(this, this.gameObj);
@@ -26,7 +25,8 @@ Level.prototype = {
 
     $('.field').on('click', function(e) {      
       var w = e.target.attributes['data-w'].value, 
-          h = e.target.attributes['data-h'].value;
+          h = e.target.attributes['data-h'].value,
+          nextLevel;
 
       switch (self.fieldObj.fieldArr[w][h]) {
         case 0:
@@ -35,7 +35,8 @@ Level.prototype = {
           self.fieldObj.cellsRender();   
           if(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr)) {
             self.stepsOff(); 
-            self.gameObj.levelResultCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+            nextLevel = self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+            self.gameObj.startNewLevel();
           } else {
             self.compStep();
           };                    
@@ -57,7 +58,7 @@ Level.prototype = {
 
   compStep: function() { 
     var self = this;
-    var w, h;
+    var w, h, nextLevel;
 
     for(var i = 0; i < 100; i++) {  
       w = self.gameObj.helperObj.randomIntFromZero(3);
@@ -69,7 +70,8 @@ Level.prototype = {
         self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
         if(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr)) {
           self.stepsOff(); 
-          self.gameObj.levelResultCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+          nextLevel = self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+          self.gameObj.startNewLevel();
         };             
         break;
       };       
