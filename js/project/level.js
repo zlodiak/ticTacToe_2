@@ -1,18 +1,25 @@
 var Level = function(gameObj) { 
   var self = this;
 
-  this.myLabel = 1;
-  this.compLabel = -1;
-  this.stepsCount = 0;
-  this.score = 0;  
   this.gameObj = gameObj; 
-  this.fieldObj = new Field(this, this.gameObj);
 
+  this.stepsCount = 0;
+  
+  this.fieldObj = new Field(this, this.gameObj);
   this.levelScreenDisplay('body');     
   this.playerStep();
 };
 
 Level.prototype = {   
+
+  finalization: function() { 
+    this.fieldObj.finalization();
+    delete this.fieldObj;
+  },
+
+  stepsOff: function() { 
+    $('.field').off('click');   
+  },
 
   playerStep: function() {
     var self = this;
@@ -26,8 +33,8 @@ Level.prototype = {
           self.fieldObj.fieldArr[w][h] = 1;
           self.stepsCount++;          
           self.fieldObj.cellsRender();   
-          if(self.checkLevelEnd(self.myLabel, self.fieldObj.fieldArr)) {
-            self.gameObj.levelResultDisplay(self.checkLevelEnd(self.myLabel, self.fieldObj.fieldArr));
+          if(self.checkLevelEnd(self.gameObj.myLabel, self.fieldObj.fieldArr)) {
+            self.gameObj.levelResultDisplay(self.checkLevelEnd(self.gameObj.myLabel, self.fieldObj.fieldArr));
           } else {
             self.compStep();
           };                    
@@ -72,8 +79,8 @@ Level.prototype = {
         self.fieldObj.fieldArr[w][h] = -1;
         self.stepsCount++; 
         self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
-        if(self.checkLevelEnd(self.compLabel, self.fieldObj.fieldArr)) {
-          self.gameObj.levelResultDisplay(self.checkLevelEnd(self.compLabel, self.fieldObj.fieldArr));
+        if(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr)) {
+          self.gameObj.levelResultDisplay(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
         };             
         break;
       };       

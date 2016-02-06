@@ -2,19 +2,23 @@ var Field = function(levelObj, gameObj) {
   var self = this;
 
   this.gameObj = gameObj;   
-  this.levelObj = levelObj;   
+  this.levelObj = levelObj;       
   this.fieldArr = [];  
   this.fieldElementId = 'field';   
   this.cellSize = 100; 
   this.width = 3; 
-  this.height = 3;    
-
+  this.height = 3;
+    
   this.fillFieldArr();
   this.fieldElementCreate();
   this.cellsRender();
 };
 
 Field.prototype = {
+
+  finalization: function() { 
+    $('#' + this.fieldElementId).remove();
+  },  
 
   fillFieldArr: function() { 
     for(var w = 0; w < this.width; w++) {
