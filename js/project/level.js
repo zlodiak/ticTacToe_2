@@ -6,7 +6,7 @@ var Level = function(gameObj) {
   
   this.fieldObj = new Field(this, this.gameObj);
   this.gameObj.levelScreenDisplay('body', this.gameObj.level);     
-  this.playerStep();
+  this.stepsPlayerOn();
 };
 
 Level.prototype = {   
@@ -16,17 +16,16 @@ Level.prototype = {
     delete this.fieldObj;
   },
 
-  stepsOff: function() { 
+  stepsPlayerOff: function() { 
     $('.field').off('click');   
   },
 
-  playerStep: function() {
+  stepsPlayerOn: function() { 
     var self = this;
 
     $('.field').on('click', function(e) {      
       var w = e.target.attributes['data-w'].value, 
-          h = e.target.attributes['data-h'].value,
-          nextLevel;
+          h = e.target.attributes['data-h'].value;
 
       switch (self.fieldObj.fieldArr[w][h]) {
         case 0:
@@ -34,9 +33,12 @@ Level.prototype = {
           self.stepsCount++;          
           self.fieldObj.cellsRender();   
           if(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr)) {
-            self.stepsOff(); 
-            nextLevel = self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
-            self.gameObj.startNewLevel();
+            self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+
+            self.stepsPlayerOff(); 
+            setTimeout(function() {
+              self.gameObj.startNewLevel();
+            }, 2000);            
           } else {
             self.compStep();
           };                    
@@ -53,12 +55,12 @@ Level.prototype = {
           console.log('Error analyze!');
           break;
       };   
-    }); 
-  },
+    });   
+  },  
 
   compStep: function() { 
     var self = this;
-    var w, h, nextLevel;
+    var w, h;
 
     for(var i = 0; i < 1000; i++) {  
       w = self.gameObj.helperObj.randomIntFromZero(3);
@@ -69,9 +71,12 @@ Level.prototype = {
         self.stepsCount++; 
         self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
         if(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr)) {
-          self.stepsOff(); 
-          nextLevel = self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
-          self.gameObj.startNewLevel();
+          self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+
+          self.stepsPlayerOff(); 
+          setTimeout(function() {
+            self.gameObj.startNewLevel();
+          }, 2000);            
         };             
         break;
       };       
@@ -100,20 +105,17 @@ Level.prototype = {
 
     // check diagonal rt-lb
     if((fieldArr[0][0] == label) && (fieldArr[1][1] == label) && (fieldArr[2][2] == label)) {
-      console.log('stop');
       winnerMark = label;
     };
 
     // check diagonal lt-rb
     if((fieldArr[0][2] == label) && (fieldArr[1][1] == label) && (fieldArr[2][0] == label)) {
-      console.log('stop');
       winnerMark = label;
     };
 
     // check verticals
     for(var h = 0; h <= 2; h++) {
       if((fieldArr[h][0] == label) && (fieldArr[h][1] == label) && (fieldArr[h][2] == label)) {
-        console.log('stop');
         winnerMark = label;
       };
     };
@@ -121,7 +123,6 @@ Level.prototype = {
     // check horizontals
     for(var w = 0; w <= 2; w++) {
       if((fieldArr[0][w] == label) && (fieldArr[1][w] == label) && (fieldArr[2][w] == label)) {
-        console.log('stop');
         winnerMark = label;
       };
     }; 

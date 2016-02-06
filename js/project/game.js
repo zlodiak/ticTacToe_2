@@ -45,9 +45,7 @@ Game.prototype = {
     } 
     else if(winner == self.compLabel) { console.log('comp');
       self.level = 1;
-    } else {  console.log('std off'); };
-
-    return self.level;   
+    };   
   }
 
 };
