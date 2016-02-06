@@ -30,10 +30,6 @@ Field.prototype = {
     };  
   },    
 
-  cellDelete: function() {
-
-  },  
-
   fieldElementCreate: function() { 
     var gameElement = $('#' + this.gameObj.gameElementId);
 

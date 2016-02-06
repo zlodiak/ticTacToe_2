@@ -24,8 +24,8 @@ Game.prototype = {
     self.levelObj = new Level(self);           
   },
 
-  levelScreenDisplay: function(parentElementTag) {
-    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.level + '</div>').appendTo(parentElementTag);   
+  levelScreenDisplay: function(parentElementTag, level) {
+    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + level + '</div>').appendTo(parentElementTag);   
 
     setTimeout(function() { 
       $('<div class="any_key_invitation" id="anyKeyInvitation">Нажмите любую клавишу для старта</div>').appendTo('#levelBeginLabel');

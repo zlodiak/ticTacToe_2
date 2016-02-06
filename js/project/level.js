@@ -5,7 +5,7 @@ var Level = function(gameObj) {
   this.stepsCount = 0;
   
   this.fieldObj = new Field(this, this.gameObj);
-  this.gameObj.levelScreenDisplay('body');     
+  this.gameObj.levelScreenDisplay('body', this.gameObj.level);     
   this.playerStep();
 };
 
@@ -60,7 +60,7 @@ Level.prototype = {
     var self = this;
     var w, h, nextLevel;
 
-    for(var i = 0; i < 100; i++) {  
+    for(var i = 0; i < 1000; i++) {  
       w = self.gameObj.helperObj.randomIntFromZero(3);
       h = self.gameObj.helperObj.randomIntFromZero(3);
 
@@ -79,12 +79,16 @@ Level.prototype = {
   }, 
 
   checkLevelEnd: function(label, fieldArr) { 
+    var result = undefined;
+
     if(this.checkWin(label, fieldArr)) {
-      return label;
+      result = label;
     } 
     else if(this.checkStandoff()) {
-      return 'standoff';
+      result = 'standoff';
     };    
+
+    return result;
   },  
 
   checkStandoff: function() { console.log(this.stepsCount);
