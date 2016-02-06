@@ -3,9 +3,8 @@ var Field = function(levelObj, gameObj) {
 
   this.gameObj = gameObj;   
   this.levelObj = levelObj;   
-
+  this.fieldArr = [];  
   this.fieldElementId = 'field';   
-  this.fieldArr = [];
   this.cellSize = 100; 
   this.width = 3; 
   this.height = 3;    
@@ -17,32 +16,30 @@ var Field = function(levelObj, gameObj) {
 
 Field.prototype = {
 
-  cellsDelete: function() {
+  fillFieldArr: function() { 
+    for(var w = 0; w < this.width; w++) {
+      this.fieldArr[w] = new Array();   
+
+      for(var h = 0; h < this.height; h++) {
+        this.fieldArr[w][h] = 0;
+      };
+    };  
+  },    
+
+  cellDelete: function() {
 
   },  
 
-  fieldElementCreate: function() {
+  fieldElementCreate: function() { 
     var gameElement = $('#' + this.gameObj.gameElementId);
 
-    $('<div class="field" id="field">d</div>').css({
+    $('<div class="field" id="field"></div>').css({
       width: (this.cellSize * 3) + 'px',
       height: (this.cellSize * 3) + 'px'
     }).appendTo(gameElement);
   },    
 
-  fillFieldArr: function() {
-    for(var w = 0; w < this.width; w++) {
-      this.levelObj.fieldArr[w] = new Array();   
-
-      for(var h = 0; h < this.height; h++) {
-        this.levelObj.fieldArr[w][h] = 0;
-      };
-    };  
-
-    console.log(this.levelObj.fieldArr);
-  },   
-
-  cellsRender: function() {
+  cellsRender: function() { 
     var bgImage;
 
     $('#' + this.fieldElementId).html('');
@@ -50,12 +47,12 @@ Field.prototype = {
     for(var w = 0; w < this.width; w++) for(var h = 0; h < this.height; h++) { 
       bgImage = '';
 
-      if(this.levelObj.fieldArr[w][h] == 0) {
+      if(this.fieldArr[w][h] == 0) {
       }
-      else if(this.levelObj.fieldArr[w][h] == 1) {
+      else if(this.fieldArr[w][h] == 1) {
         bgImage = 'images/cross.png';
       }
-      else if(this.levelObj.fieldArr[w][h] == -1) {
+      else if(this.fieldArr[w][h] == -1) {
         bgImage = 'images/zero.png';
       };    
 

@@ -1,44 +1,49 @@
 var Level = function(gameObj) { 
   var self = this;
 
-  self.stepsCount = 0;
+  this.myLabel = 1;
+  this.compLabel = -1;
+  this.stepsCount = 0;
+  this.score = 0;  
   this.gameObj = gameObj; 
-  this.fieldArr = [];
   this.fieldObj = new Field(this, this.gameObj);
 
-  console.log('===' + this.fieldArr);
-
   this.levelScreenDisplay('body');     
-  this.clickHandlersInit();
+  this.playerStep();
 };
 
-Level.prototype = {
+Level.prototype = {   
 
-  clickHandlersInit: function() {
-    $('.cell').on('click', function() {
-      var w = $(this).attr('data-w'), 
-          h = $(this).attr('data-h');
+  playerStep: function() {
+    var self = this;
 
-      //console.log(this.fieldArr);
+    $('.field').on('click', function(e) {      
+      var w = e.target.attributes['data-w'].value, 
+          h = e.target.attributes['data-h'].value;
 
-      switch (this.fieldArr[w][h]) {
+      switch (self.fieldObj.fieldArr[w][h]) {
         case 0:
-          this.fieldArr[w][h] = 1;
-          this.stepsCount++;          
-          this.fieldObj.cellsRender();                
+          self.fieldObj.fieldArr[w][h] = 1;
+          self.stepsCount++;          
+          self.fieldObj.cellsRender();   
+          if(self.checkLevelEnd(self.myLabel, self.fieldObj.fieldArr)) {
+            self.gameObj.levelResultDisplay(self.checkLevelEnd(self.myLabel, self.fieldObj.fieldArr));
+          } else {
+            self.compStep();
+          };                    
           break;
         case 1:
+          console.log('В эту клету вы уже ходили');
           //self.informer.refreshMessage('В эту клету вы уже ходили', 'red');
           break;
         case -1:
+          console.log('Эта клетка уже занята');
           //self.informer.refreshMessage('Эта клетка уже занята', 'red');
           break;
         default:
-          // console.log('Error analyze!');
+          console.log('Error analyze!');
           break;
       };   
-
-      self.stepsLoop();
     }); 
   },
 
@@ -55,114 +60,70 @@ Level.prototype = {
     }, 1000);
   },   
 
-  compStep: function() {  
+  compStep: function() { 
+    var self = this;
     var w, h;
 
     for(var i = 0; i < 100; i++) {  
-      w = self.helper.randomIntFromZero(3);
-      h = self.helper.randomIntFromZero(3);
+      w = self.gameObj.helperObj.randomIntFromZero(3);
+      h = self.gameObj.helperObj.randomIntFromZero(3);
 
-      if(self.fieldArr[w][h] == 0) {  
-        self.fieldArr[w][h] = -1;
-        self.field.cellsRender(self.fieldElementId, self.fieldArr); 
+      if(self.fieldObj.fieldArr[w][h] == 0) {  
+        self.fieldObj.fieldArr[w][h] = -1;
+        self.stepsCount++; 
+        self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
+        if(self.checkLevelEnd(self.compLabel, self.fieldObj.fieldArr)) {
+          self.gameObj.levelResultDisplay(self.checkLevelEnd(self.compLabel, self.fieldObj.fieldArr));
+        };             
         break;
-      };
-    };
-
-    self.stepsCount++; 
-    self.field.cellsRender(self.fieldElementId, self.fieldArr);
-    self.checkStateLevel(self.compLabel);
-
-    return;
+      };       
+    };   
   }, 
 
-  stepsLoop: function() {   
-    $('.cell').one('click', function() {
-      var w = $(this).attr('data-w'), 
-          h = $(this).attr('data-h')
+  checkLevelEnd: function(label, fieldArr) { 
+    if(this.checkWin(label, fieldArr)) {
+      return label;
+    } 
+    else if(this.checkStandoff()) {
+      return 'standoff';
+    };    
+  },  
 
-      switch (self.fieldArr[w][h]) {
-        case 0:
-          self.fieldArr[w][h] = 1;
-          self.stepsCount++;          
-          self.field.cellsRender(self.fieldElementId, self.fieldArr);
-          //this.checkStateLevel(self.myLabel);
-          this.compStep();                  
-          break;
-        case 1:
-          self.informer.refreshMessage('В эту клету вы уже ходили', 'red');
-          break;
-        case -1:
-          self.informer.refreshMessage('Эта клетка уже занята', 'red');
-          break;
-        default:
-          // console.log('Error analyze!');
-          break;
-      };   
-
-      self.stepsLoop();
-    });  
+  checkStandoff: function() { console.log(this.stepsCount);
+    if(this.stepsCount >= 9) { return 'standoff' };
   },
 
-  checkStateLevel: function(label) {
-    self.checkWin(label);
-    self.checkStandoff();
-  },
+  checkWin: function(label, fieldArr) { 
+    var winnerMark = undefined;
 
-  checkStandoff: function() {
-    if(self.stepsCount >= 9) { self.levelResultDisplay() };
-  },
-
-  checkWin: function(label) {
     // check diagonal rt-lb
-    if((self.fieldArr[0][0] == label) && (self.fieldArr[1][1] == label) && (self.fieldArr[2][2] == label)) {
-      self.levelResultDisplay(label);
-      self.scoreValue = 1000;
+    if((fieldArr[0][0] == label) && (fieldArr[1][1] == label) && (fieldArr[2][2] == label)) {
+      console.log('stop');
+      winnerMark = label;
     };
 
     // check diagonal lt-rb
-    if((self.fieldArr[0][2] == label) && (self.fieldArr[1][1] == label) && (self.fieldArr[2][0] == label)) {
-      self.levelResultDisplay(label);
-      self.scoreValue = 1000;
+    if((fieldArr[0][2] == label) && (fieldArr[1][1] == label) && (fieldArr[2][0] == label)) {
+      console.log('stop');
+      winnerMark = label;
     };
 
     // check verticals
     for(var h = 0; h <= 2; h++) {
-      if((self.fieldArr[h][0] == label) && (self.fieldArr[h][1] == label) && (self.fieldArr[h][2] == label)) {
-        (self.fieldArr[1][1] == label)?self.scoreValue = 1500:self.scoreValue = 2000;
-        self.informer.refreshMessage('Красивая игра', 'cyan');
-        self.levelResultDisplay(label);
+      if((fieldArr[h][0] == label) && (fieldArr[h][1] == label) && (fieldArr[h][2] == label)) {
+        console.log('stop');
+        winnerMark = label;
       };
     };
 
     // check horizontals
     for(var w = 0; w <= 2; w++) {
-      if((self.fieldArr[0][w] == label) && (self.fieldArr[1][w] == label) && (self.fieldArr[2][w] == label)) {
-        (self.fieldArr[1][1] == label)?self.scoreValue = 1500:self.scoreValue = 2000;
-        self.informer.refreshMessage('Красивая игра', 'cyan');
-        self.levelResultDisplay(label);
+      if((fieldArr[0][w] == label) && (fieldArr[1][w] == label) && (fieldArr[2][w] == label)) {
+        console.log('stop');
+        winnerMark = label;
       };
-    };    
-  }  
+    }; 
 
-  //this.cellsObserver = new CellsObserver();
-  //this.fieldObj = new Field(this.gameElementId, this.cellSize);
-
-/*  this.helper = new Helper, 
-  this.informer = new Informer(this.gameElementId, {
-                        score: this.score,
-                        level: this.level
-                      });   
-  this.field = new Field(this.gameElementId, this.cellSize),
-
-  this.fillFieldArr();
-
-  this.field.cellsRender(self.fieldElementId, self.fieldArr);  
-
-  self.informer.refreshInfo({
-    score: self.score,
-    level: self.level
-  });      
-
-  this.stepsLoop(); */  
+    return winnerMark;
+  }
 };
