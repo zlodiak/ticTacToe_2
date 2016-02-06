@@ -6,7 +6,7 @@ var Level = function(gameObj) {
   this.stepsCount = 0;
   
   this.fieldObj = new Field(this, this.gameObj);
-  this.levelScreenDisplay('body');     
+  this.gameObj.levelScreenDisplay('body');     
   this.playerStep();
 };
 
@@ -33,8 +33,9 @@ Level.prototype = {
           self.fieldObj.fieldArr[w][h] = 1;
           self.stepsCount++;          
           self.fieldObj.cellsRender();   
-          if(self.checkLevelEnd(self.gameObj.myLabel, self.fieldObj.fieldArr)) {
-            self.gameObj.levelResultDisplay(self.checkLevelEnd(self.gameObj.myLabel, self.fieldObj.fieldArr));
+          if(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr)) {
+            self.stepsOff(); 
+            self.gameObj.levelResultCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
           } else {
             self.compStep();
           };                    
@@ -54,19 +55,6 @@ Level.prototype = {
     }); 
   },
 
-  levelScreenDisplay: function(parentElementTag) {
-    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.gameObj.level + '</div>').appendTo(parentElementTag);   
-
-    setTimeout(function() { 
-      $('<div class="any_key_invitation" id="anyKeyInvitation">Нажмите любую клавишу для старта</div>').appendTo('#levelBeginLabel');
-
-      document.onkeypress = function() {
-        document.onkeypress = undefined;
-        $('#levelBeginLabel').remove();
-      };          
-    }, 1000);
-  },   
-
   compStep: function() { 
     var self = this;
     var w, h;
@@ -80,7 +68,8 @@ Level.prototype = {
         self.stepsCount++; 
         self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
         if(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr)) {
-          self.gameObj.levelResultDisplay(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+          self.stepsOff(); 
+          self.gameObj.levelResultCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
         };             
         break;
       };       

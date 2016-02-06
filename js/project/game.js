@@ -4,7 +4,7 @@ var Game = function() {
   this.level = 1;
   this.hiScore = 0;
   this.score = 0;    
-  this.myLabel = 1;
+  this.playerLabel = 1;
   this.compLabel = -1;
     
   this.helperObj = new Helper();  
@@ -24,15 +24,24 @@ Game.prototype = {
     self.levelObj = new Level(self);           
   },
 
-  levelResultDisplay: function(winner) { 
-    var self = this;
+  levelScreenDisplay: function(parentElementTag) {
+    $('<div class="level_begin_label" id="levelBeginLabel">Уровень: ' + this.level + '</div>').appendTo(parentElementTag);   
 
-    console.log(self + 'winer: ' + winner);  
+    setTimeout(function() { 
+      $('<div class="any_key_invitation" id="anyKeyInvitation">Нажмите любую клавишу для старта</div>').appendTo('#levelBeginLabel');
 
-    self.levelObj.stepsOff(); 
+      document.onkeypress = function() {
+        document.onkeypress = undefined;
+        $('#levelBeginLabel').remove();
+      };          
+    }, 1000);
+  },     
+
+  levelResultCompute: function(winner) { 
+    var self = this;   
 
     setTimeout(function() {
-      if(winner == self.myLabel) {  console.log('you');
+      if(winner == self.playerLabel) {  console.log('you');
         self.level += 1;
       } 
       else if(winner == self.compLabel) { console.log('comp');
