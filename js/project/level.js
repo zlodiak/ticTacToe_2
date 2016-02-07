@@ -16,32 +16,30 @@ Level.prototype = {
     delete this.fieldObj;
   },
 
-  stepsPlayerOff: function() { 
-    $('.field').off('click');   
-  },
-
   stepsPlayerOn: function() { 
     var self = this;
 
     $('.field').on('click', function(e) {      
       var w = e.target.attributes['data-w'].value, 
-          h = e.target.attributes['data-h'].value;
+          h = e.target.attributes['data-h'].value, 
+          resultLevel;
 
       switch (self.fieldObj.fieldArr[w][h]) {
         case 0:
-          self.fieldObj.fieldArr[w][h] = 1;
+          self.fieldObj.changeFieldArr(w, h, self.gameObj.playerLabel);
           self.stepsCount++;          
-          self.fieldObj.cellsRender();   
-          if(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr)) {
-            self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+          self.fieldObj.cellsRender();  
 
-            self.stepsPlayerOff(); 
-            setTimeout(function() {
-              self.gameObj.startNewLevel();
-            }, 2000);            
+          resultLevel = self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr);  
+
+          if(resultLevel) {
+            self.gameObj.numLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+            self.scoreCalculated(resultLevel);                     
+            self.stopLevel();            
           } else {
             self.compStep();
-          };                    
+          };     
+
           break;
         case 1:
           console.log('В эту клету вы уже ходили');
@@ -60,28 +58,54 @@ Level.prototype = {
 
   compStep: function() { 
     var self = this;
-    var w, h;
+    var w, h, resultLevel;
 
     for(var i = 0; i < 1000; i++) {  
       w = self.gameObj.helperObj.randomIntFromZero(3);
       h = self.gameObj.helperObj.randomIntFromZero(3);
 
       if(self.fieldObj.fieldArr[w][h] == 0) {  
-        self.fieldObj.fieldArr[w][h] = -1;
+        self.fieldObj.changeFieldArr(w, h, self.gameObj.compLabel);
         self.stepsCount++; 
-        self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);    
-        if(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr)) {
-          self.gameObj.nextLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+        self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);  
 
-          self.stepsPlayerOff(); 
-          setTimeout(function() {
-            self.gameObj.startNewLevel();
-          }, 2000);            
-        };             
+        resultLevel = self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr);
+
+        if(resultLevel) {
+          self.gameObj.numLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+          self.scoreCalculated(resultLevel);                     
+          self.stopLevel();                     
+        };   
+
         break;
       };       
     };   
   }, 
+
+  scoreCalculated: function(resultLevel) { 
+    var self = this;
+
+    if(resultLevel == self.gameObj.compLabel) {
+      if(self.gameObj.score > self.gameObj.hiScore) {
+        self.gameObj.hiScore = self.gameObj.score;
+      };      
+      self.gameObj.score = 0;
+    } else if(resultLevel == self.gameObj.playerLabel) {
+      self.gameObj.score += 500;
+    } else if(resultLevel == 'standoff') {
+      self.gameObj.score += 100;
+    };
+  },
+
+  stopLevel: function() { 
+    var self = this;
+
+    $('.field').off('click');   
+
+    setTimeout(function() {
+      self.gameObj.startNewLevel();
+    }, 2000);  
+  },  
 
   checkLevelEnd: function(label, fieldArr) { 
     var result = undefined;
@@ -96,7 +120,7 @@ Level.prototype = {
     return result;
   },  
 
-  checkStandoff: function() { console.log(this.stepsCount);
+  checkStandoff: function() { 
     if(this.stepsCount >= 9) { return 'standoff' };
   },
 

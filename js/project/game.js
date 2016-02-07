@@ -16,6 +16,9 @@ Game.prototype = {
   startNewLevel: function() { 
     var self = this;
 
+    console.log(self.hiScore);
+    console.log(self.score);
+
     if(self.levelObj) {
       self.levelObj.finalization();
       delete self.levelObj;      
@@ -37,7 +40,7 @@ Game.prototype = {
     }, 1000);
   },     
 
-  nextLevelCompute: function(winner) { 
+  numLevelCompute: function(winner) { 
     var self = this;   
 
     if(winner == self.playerLabel) {  console.log('you');
@@ -45,7 +48,9 @@ Game.prototype = {
     } 
     else if(winner == self.compLabel) { console.log('comp');
       self.level = 1;
-    };   
+    };  
+
+
   }
 
 };

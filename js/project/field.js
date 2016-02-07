@@ -20,6 +20,10 @@ Field.prototype = {
     $('#' + this.fieldElementId).remove();
   },  
 
+  changeFieldArr: function(w, h, value) { 
+    this.fieldArr[w][h] = value;
+  },
+
   fillFieldArr: function() { 
     for(var w = 0; w < this.width; w++) {
       this.fieldArr[w] = new Array();   
