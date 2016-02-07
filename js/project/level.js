@@ -18,8 +18,12 @@ Level.prototype = {
 
   stepsPlayerOn: function() { 
     var self = this;
+    var fieldElem = document.getElementById(self.fieldObj.fieldElementId);
 
-    $('.field').on('click', function(e) {      
+    fieldElem.onclick = function(e) {
+      e = e || event;
+      target = e.target || e.srcElement;
+    
       var w_coord = e.target.attributes['data-w'].value, 
           h_coord = e.target.attributes['data-h'].value, 
           resultLevel;
@@ -53,7 +57,7 @@ Level.prototype = {
           /*console.log('Error analyze!');*/
           break;
       };   
-    });   
+    }  
   },  
 
   compStep: function() { 
@@ -99,8 +103,9 @@ Level.prototype = {
 
   stopLevel: function() { 
     var self = this;
+    var fieldElem = document.getElementById(self.fieldObj.fieldElementId);
 
-    $('.field').off('click');   
+    fieldElem.onclick = undefined;
 
     setTimeout(function() {
       self.gameObj.startNewLevel();

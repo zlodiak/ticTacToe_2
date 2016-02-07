@@ -16,9 +16,6 @@ Game.prototype = {
   startNewLevel: function() { 
     var self = this;
 
-    console.log(self.hiScore);
-    console.log(self.score);
-
     if(self.levelObj) {
       self.levelObj.finalization();
       delete self.levelObj;      
