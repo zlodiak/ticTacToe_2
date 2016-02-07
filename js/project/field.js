@@ -20,16 +20,16 @@ Field.prototype = {
     $('#' + this.fieldElementId).remove();
   },  
 
-  changeFieldArr: function(w, h, value) { 
-    this.fieldArr[w][h] = value;
+  changeFieldArr: function(w_coord, h_coord, value) { 
+    this.fieldArr[w_coord][h_coord] = value;
   },
 
   fillFieldArr: function() { 
-    for(var w = 0; w < this.width; w++) {
-      this.fieldArr[w] = new Array();   
+    for(var w_coord = 0; w_coord < this.width; w_coord++) {
+      this.fieldArr[w_coord] = new Array();   
 
-      for(var h = 0; h < this.height; h++) {
-        this.fieldArr[w][h] = 0;
+      for(var h_coord = 0; h_coord < this.height; h_coord++) {
+        this.fieldArr[w_coord][h_coord] = 0;
       };
     };  
   },    
@@ -48,25 +48,25 @@ Field.prototype = {
 
     $('#' + this.fieldElementId).html('');
 
-    for(var w = 0; w < this.width; w++) for(var h = 0; h < this.height; h++) { 
+    for(var w_coord = 0; w_coord < this.width; w_coord++) for(var h_coord = 0; h_coord < this.height; h_coord++) { 
       bgImage = '';
 
-      if(this.fieldArr[w][h] == 0) {
+      if(this.fieldArr[w_coord][h_coord] == 0) {
       }
-      else if(this.fieldArr[w][h] == 1) {
+      else if(this.fieldArr[w_coord][h_coord] == 1) {
         bgImage = 'images/cross.png';
       }
-      else if(this.fieldArr[w][h] == -1) {
+      else if(this.fieldArr[w_coord][h_coord] == -1) {
         bgImage = 'images/zero.png';
       };    
 
-      $('<div class="cell" id="Cell_' + w + '_' + h + '" data-w="' + w + '" data-h="' + h + '" ></div>').css({
+      $('<div class="cell" id="Cell_' + w_coord + '_' + h_coord + '" data-w="' + w_coord + '" data-h="' + h_coord + '" ></div>').css({
         background: 'url("' + bgImage + '") left top no-repeat',
         backgroundSize: 'cover',
         width: (this.cellSize - 1) + 'px',
         height: (this.cellSize -1) + 'px',
-        left: (w * this.cellSize) + 'px',
-        top: (h * this.cellSize) + 'px'
+        left: (w_coord * this.cellSize) + 'px',
+        top: (h_coord * this.cellSize) + 'px'
       }).appendTo('#' + this.fieldElementId);     
     };
   }  

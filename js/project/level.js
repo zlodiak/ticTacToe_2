@@ -20,13 +20,13 @@ Level.prototype = {
     var self = this;
 
     $('.field').on('click', function(e) {      
-      var w = e.target.attributes['data-w'].value, 
-          h = e.target.attributes['data-h'].value, 
+      var w_coord = e.target.attributes['data-w'].value, 
+          h_coord = e.target.attributes['data-h'].value, 
           resultLevel;
 
-      switch (self.fieldObj.fieldArr[w][h]) {
+      switch (self.fieldObj.fieldArr[w_coord][h_coord]) {
         case 0:
-          self.fieldObj.changeFieldArr(w, h, self.gameObj.playerLabel);
+          self.fieldObj.changeFieldArr(w_coord, h_coord, self.gameObj.playerLabel);
           self.stepsCount++;          
           self.fieldObj.cellsRender();  
 
@@ -58,14 +58,14 @@ Level.prototype = {
 
   compStep: function() { 
     var self = this;
-    var w, h, resultLevel;
+    var w_coord, h_coord, resultLevel;
 
     for(var i = 0; i < 1000; i++) {  
-      w = self.gameObj.helperObj.randomIntFromZero(3);
-      h = self.gameObj.helperObj.randomIntFromZero(3);
+      w_coord = self.gameObj.helperObj.randomIntFromZero(3);
+      h_coord = self.gameObj.helperObj.randomIntFromZero(3);
 
-      if(self.fieldObj.fieldArr[w][h] == 0) {  
-        self.fieldObj.changeFieldArr(w, h, self.gameObj.compLabel);
+      if(self.fieldObj.fieldArr[w_coord][h_coord] == 0) {  
+        self.fieldObj.changeFieldArr(w_coord, h_coord, self.gameObj.compLabel);
         self.stepsCount++; 
         self.fieldObj.cellsRender(self.fieldElementId, self.fieldArr);  
 
@@ -138,15 +138,15 @@ Level.prototype = {
     };
 
     // check verticals
-    for(var h = 0; h <= 2; h++) {
-      if((fieldArr[h][0] == label) && (fieldArr[h][1] == label) && (fieldArr[h][2] == label)) {
+    for(var h_coord = 0; h_coord <= 2; h_coord++) {
+      if((fieldArr[h_coord][0] == label) && (fieldArr[h_coord][1] == label) && (fieldArr[h_coord][2] == label)) {
         winnerMark = label;
       };
     };
 
     // check horizontals
-    for(var w = 0; w <= 2; w++) {
-      if((fieldArr[0][w] == label) && (fieldArr[1][w] == label) && (fieldArr[2][w] == label)) {
+    for(var w_coord = 0; w_coord <= 2; w_coord++) {
+      if((fieldArr[0][w_coord] == label) && (fieldArr[1][w_coord] == label) && (fieldArr[2][w_coord] == label)) {
         winnerMark = label;
       };
     }; 
