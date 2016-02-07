@@ -17,12 +17,9 @@ var Field = function(levelObj, gameObj) {
 Field.prototype = {
 
   finalization: function() { 
-    $('#' + this.fieldElementId).remove();
+    var fieldElem = document.getElementById(this.fieldElementId);
+    fieldElem.parentNode.removeChild(fieldElem);
   },  
-
-  changeFieldArr: function(w_coord, h_coord, value) { 
-    this.fieldArr[w_coord][h_coord] = value;
-  },
 
   fillFieldArr: function() { 
     for(var w_coord = 0; w_coord < this.width; w_coord++) {
@@ -32,7 +29,11 @@ Field.prototype = {
         this.fieldArr[w_coord][h_coord] = 0;
       };
     };  
-  },    
+  }, 
+
+  changeFieldArr: function(w_coord, h_coord, value) { 
+    this.fieldArr[w_coord][h_coord] = value;
+  },   
 
   fieldElementCreate: function() { 
     var gameElement = $('#' + this.gameObj.gameElementId);
@@ -46,7 +47,7 @@ Field.prototype = {
   cellsRender: function() { 
     var bgImage;
 
-    $('#' + this.fieldElementId).html('');
+    document.getElementById(this.fieldElementId).innerHTML ='';
 
     for(var w_coord = 0; w_coord < this.width; w_coord++) for(var h_coord = 0; h_coord < this.height; h_coord++) { 
       bgImage = '';

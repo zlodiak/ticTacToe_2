@@ -50,7 +50,7 @@ Level.prototype = {
           //self.informer.refreshMessage('Эта клетка уже занята', 'red');
           break;
         default:
-          console.log('Error analyze!');
+          /*console.log('Error analyze!');*/
           break;
       };   
     });   
