@@ -5,6 +5,7 @@ var Level = function(gameObj) {
   this.stepsCount = 0;
   
   this.fieldObj = new Field(this, this.gameObj);
+  this.informerObj = new Informer(this.gameObj);
   this.gameObj.levelScreenDisplay('body', this.gameObj.level);     
   this.stepsPlayerOn();
 };
@@ -14,6 +15,9 @@ Level.prototype = {
   finalization: function() { 
     this.fieldObj.finalization();
     delete this.fieldObj;
+
+    this.informerObj.finalization();
+    delete this.informerObj;    
   },
 
   stepsPlayerOn: function() { 
@@ -36,8 +40,9 @@ Level.prototype = {
 
           resultLevel = self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr);  
 
-          if(resultLevel) {
+          if(resultLevel) {            
             self.gameObj.numLevelCompute(self.checkLevelEnd(self.gameObj.playerLabel, self.fieldObj.fieldArr));
+            self.sendFimalMessage(resultLevel);            
             self.scoreCalculated(resultLevel);                     
             self.stopLevel();            
           } else {
@@ -46,12 +51,10 @@ Level.prototype = {
 
           break;
         case 1:
-          console.log('В эту клету вы уже ходили');
-          //self.informer.refreshMessage('В эту клету вы уже ходили', 'red');
+          self.informerObj.refreshMessage('В эту клету вы уже ходили', 'red');
           break;
         case -1:
-          console.log('Эта клетка уже занята');
-          //self.informer.refreshMessage('Эта клетка уже занята', 'red');
+          self.informerObj.refreshMessage('Эта клетка уже занята', 'red');
           break;
         default:
           /*console.log('Error analyze!');*/
@@ -77,6 +80,7 @@ Level.prototype = {
 
         if(resultLevel) {
           self.gameObj.numLevelCompute(self.checkLevelEnd(self.gameObj.compLabel, self.fieldObj.fieldArr));
+          self.sendFimalMessage(resultLevel);          
           self.scoreCalculated(resultLevel);                     
           self.stopLevel();                     
         };   
@@ -96,9 +100,21 @@ Level.prototype = {
       self.gameObj.score = 0;
     } else if(resultLevel == self.gameObj.playerLabel) {
       self.gameObj.score += 500;
-    } else if(resultLevel == 'standoff') {
+    } else if(resultLevel == self.gameObj.standOffLabel) {
       self.gameObj.score += 100;
     };
+  },
+
+  sendFimalMessage: function(resultLevel) {
+    var self = this;
+
+    if(resultLevel == self.gameObj.compLabel) {
+      self.informerObj.refreshMessage('Вы проиграли', 'red');
+    } else if(resultLevel == self.gameObj.playerLabel) {
+      self.informerObj.refreshMessage('Вы выиграли', 'lime');
+    } else if(resultLevel == self.gameObj.standOffLabel) {
+      self.informerObj.refreshMessage('Ничья, переиграем уровень заново', 'orange');
+    };    
   },
 
   stopLevel: function() { 
@@ -119,14 +135,14 @@ Level.prototype = {
       result = label;
     } 
     else if(this.checkStandoff()) {
-      result = 'standoff';
+      result = this.gameObj.standOffLabel;
     };    
 
     return result;
   },  
 
   checkStandoff: function() { 
-    if(this.stepsCount >= 9) { return 'standoff' };
+    if(this.stepsCount >= 9) { return this.gameObj.standOffLabel };
   },
 
   checkWin: function(label, fieldArr) { 

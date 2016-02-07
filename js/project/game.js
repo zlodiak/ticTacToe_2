@@ -6,6 +6,7 @@ var Game = function() {
   this.score = 0;    
   this.playerLabel = 1;
   this.compLabel = -1;
+  this.standOffLabel = 'standoff';
     
   this.helperObj = new Helper();  
   this.startNewLevel(); 
@@ -40,10 +41,10 @@ Game.prototype = {
   numLevelCompute: function(winner) { 
     var self = this;   
 
-    if(winner == self.playerLabel) {  console.log('you');
+    if(winner == self.playerLabel) {  
       self.level += 1;
     } 
-    else if(winner == self.compLabel) { console.log('comp');
+    else if(winner == self.compLabel) { 
       self.level = 1;
     };  
 
