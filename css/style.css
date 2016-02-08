@@ -179,7 +179,7 @@ input:-moz-placeholder {
 	position: absolute;
 	bottom: 0;
 	left: 0;
-	z-index: 300;
+	z-index: 2000;
 	background: #000;
 	padding: 10px;
 
