@@ -2,12 +2,12 @@
 INFO: 
 	project: 
 	browsers: opera/chrome/FF/ie9/safari
-	width: 1000 + scroll
+	width: 300
 	columns: ?
-	markup: Sergey Kalinin 12/2015 (prozaik81-2@yandex.ru)
+	markup: Sergey Kalinin 01/2016 (prozaik81-2@yandex.ru)
 	use: jq
 	desc: 	
-	version 1
+	version 2
 */	
 
 /*************************************************************************************************************** COMMON_STYLES */
@@ -77,16 +77,6 @@ input:-moz-placeholder {
 /*************************************************************************************************************** GLOBAL_layout */
 
 /*************************************************************************************************************** GLOBAL_blocks */
-.mocha{
-	position: absolute;
-	left: 0;
-	top: 0;
-}
-
-.mocha *{
-	color: #ccc !important;
-}
-
 .game{
 /*	position: absolute;
 	top: 0;
@@ -183,3 +173,26 @@ input:-moz-placeholder {
 	border: 1px solid #000;
 	overflow: hidden;
 }
+
+
+.copyright{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 300;
+	background: #000;
+	padding: 10px;
+
+	font: 12px/20px arial, sans-serif;
+}
+
+	.developer{
+		color: #fff;
+
+
+	}
+
+	.git_hub{
+		color: #fff;
+		text-decoration: none;
+	}

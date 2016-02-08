@@ -1,4 +1,4 @@
-# tic tac toe v2
-education project. game 
+# tic tac toe v2(without inheritance)
+education project. JS-game 
 
-live example: 
+live example: http://prozaik.16mb.com/works/weekend_projects/ticTacToe_2/
