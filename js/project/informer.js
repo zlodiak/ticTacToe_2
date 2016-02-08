@@ -55,8 +55,8 @@ Informer.prototype = {
   },
 
   refreshInfo: function(scoreValueId, levelValueId, infoArr) {
-    $('#scoreValue').text(infoArr['score']);
-    $('#levelValue').text(infoArr['level']);
+    document.getElementById(scoreValueId).innerHTML = infoArr['score'];
+    document.getElementById(levelValueId).innerHTML = infoArr['level'];
   }  
 
 }
