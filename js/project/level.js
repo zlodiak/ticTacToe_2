@@ -51,7 +51,7 @@ Level.prototype = {
 
           break;
         case 1:
-          self.informerObj.refreshMessage('В эту клету вы уже ходили', 'red');
+          self.informerObj.refreshMessage('В эту клетку вы уже ходили', 'red');
           break;
         case -1:
           self.informerObj.refreshMessage('Эта клетка уже занята', 'red');
@@ -111,7 +111,7 @@ Level.prototype = {
     if(resultLevel == self.gameObj.compLabel) {
       self.informerObj.refreshMessage('Вы проиграли', 'red');
     } else if(resultLevel == self.gameObj.playerLabel) {
-      self.informerObj.refreshMessage('Вы выиграли', 'lime');
+      self.informerObj.refreshMessage('Вы выиграли!', 'lime');
     } else if(resultLevel == self.gameObj.standOffLabel) {
       self.informerObj.refreshMessage('Ничья, переиграем уровень заново', 'orange');
     };    

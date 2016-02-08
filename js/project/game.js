@@ -47,8 +47,6 @@ Game.prototype = {
     else if(winner == self.compLabel) { 
       self.level = 1;
     };  
-
-
   }
 
 };

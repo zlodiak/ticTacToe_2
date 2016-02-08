@@ -11,7 +11,7 @@ var Informer = function(gameObj) {
 
   this.create(this.gameObj.gameElementId, this.informerElementId, this.levelValueId, this.scoreValueId);
   this.refreshHiScore(this.gameObj.hiScore);
-  this.refreshMessage('Игра началась', 'orange');
+  this.refreshMessage('Игра началась. Ваш ход', 'orange');
   this.refreshInfo(this.scoreValueId, this.levelValueId, {'score': this.gameObj.score, 'level': this.gameObj.level });
 };
 
